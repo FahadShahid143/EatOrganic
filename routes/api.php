@@ -44,7 +44,6 @@ Route::group(['middleware' => ['auth:api', 'App\Http\Middleware\AdminMiddleware'
     Route::delete('categories/{category}', 'CategoryController@delete');
 
 
-
 //for product table
     Route::get('products', 'ProductController@index');
     Route::get('products/{product}', 'ProductController@show');
