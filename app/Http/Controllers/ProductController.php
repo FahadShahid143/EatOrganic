@@ -7,6 +7,22 @@ use App\Product;
 
 class ProductController extends Controller
 {
+    public function search(Request $request)
+    {
+        $data = $request->get('data');
+
+        $products = Product::where('CompanyID', 'like', "%{$data}%")->get();
+
+        return response()->json($products, 201);
+
+        /*return Response::json([
+        'data' => $drivers
+        ]);*/
+    }
+
+
+
+
     public function index()
     {
         return Product::all();

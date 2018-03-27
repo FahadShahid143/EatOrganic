@@ -45,6 +45,7 @@ Route::group(['middleware' => ['auth:api', 'App\Http\Middleware\AdminMiddleware'
 
 
 //for product table
+    Route::get('search', 'ProductController@search');
     Route::get('products', 'ProductController@index');
     Route::get('products/{product}', 'ProductController@show');
     Route::post('products', 'ProductController@store');
