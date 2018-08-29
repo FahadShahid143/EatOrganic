@@ -6,6 +6,5 @@ use Illuminate\Database\Eloquent\Model;
 
 class Review extends Model
 {
-    protected $primaryKey = 'ReviewID';
-    protected $fillable = ['ProductID', 'comment'];
+    protected $fillable = ['email','name','comment'];
 }

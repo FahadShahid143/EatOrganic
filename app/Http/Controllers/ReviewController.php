@@ -4,12 +4,22 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Review;
+use Illuminate\Support\Facades\Input;
 
 class ReviewController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        return Review::all();
+
+        $review = new Review();
+        $review->name = Input::get('name');
+        $review->ProductID = Input::get('PID');
+        $review->email = Input::get('email');
+        $review->comment = Input::get('comment');
+
+        $review->save();
+        return redirect()->back()->with('success_message', 'Review Added!');
+     //   return Review::all();
     }
 
     public function show(Review $review)

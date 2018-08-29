@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Category;
+use Illuminate\Support\Facades\DB;
 
 class CategoryController extends Controller
 {
@@ -36,5 +37,39 @@ class CategoryController extends Controller
         $category->delete();
 
         return response()->json(null, 204);
+    }
+
+    public function CategoryProductJoin($category)
+    {
+
+        $products = DB::table( 'category' )
+            ->join( 'category_product', 'category.CategoryID', '=', 'category_product.CategoryID' )
+            ->join( 'products', 'products.ProductID', '=', 'category_product.ProductID' )
+            ->where( 'category.CategoryID', $category)
+            ->get();
+
+
+
+
+        foreach($products as $product){
+
+            $product->ProductImage = str_replace("products\July2018","storage/products/july2018",$product->ProductImage);
+            $filename = $product->ProductImage;
+            $filename = (file_get_contents($filename));
+            $product->ProductImage = base64_encode($filename);
+            //$image = Array('image'=>json_encode(base64_encode($filename)));
+
+
+        }
+        return $products;
+/*
+
+        $item = DB::table('categories')
+            ->join('category_product', function ($join) {
+                $join->on('categories.CategoryID', '=', 'category_product.CategoryID');
+            })->where('categories.CategoryID', $category)
+            ->get();*/
+
+        return response()->json($item);
     }
 }

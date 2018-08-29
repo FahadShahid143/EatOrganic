@@ -21,10 +21,24 @@ class AdminMiddleware
         /*$user = Auth::user();
         var_dump($user->name);
         die;*/
-        if ($request->user() && $request->user()->role!='admin')
-        {
-            return redirect('home');
+
+//        dd($request->user()->role=='customer');
+
+        if ($request->user() && ($request->user()->role=='customer')){
+            //dd("true");
+            //return redirect('/shop');
+            return $next($request);
         }
+        else {
+            return redirect('/login');
+        }
+ /*       if ($request->user() && $request->user()->role!='admin')
+        {
+            return redirect('/shop');
+        }
+        else {
+            dd("user");
+        }*/
 
         return $next($request);
     }

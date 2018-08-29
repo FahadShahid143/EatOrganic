@@ -19,11 +19,11 @@ class CreateProductsTable extends Migration
             $table->text('ProductDesc');
             $table->string('ProductImage');
 
-            $table->integer('CategoryID')->unsigned();
-            $table->foreign('CategoryID')->references('CategoryID')->on('categories');
+           /* $table->integer('CategoryID')->unsigned();
+            $table->foreign('CategoryID')->references('CategoryID')->on('categories');*/
 
-            $table->integer('CompanyID')->unsigned();
-            $table->foreign('CompanyID')->references('CompanyID')->on('companies');
+            /*$table->integer('CompanyID')->unsigned();
+            $table->foreign('CompanyID')->references('CompanyID')->on('companies');*/
 
             $table->float('Price');
             $table->float('Discount');

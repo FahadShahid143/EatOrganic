@@ -16,18 +16,17 @@ use Illuminate\Http\Request;
 Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
+//Route::get('products', 'ProductController@index');
 
-
-Route::post('register', 'Auth\RegisterController@register');
-Route::post('login', 'Auth\LoginController@login');
-Route::post('logout', 'Auth\LoginController@logout');
-
+Route::post('registerapi', 'Auth\RegisterController@apiregister');
+Route::post('logapi', 'Auth\LoginController@apilogin');
+Route::post('logoutapi', 'Auth\LoginController@apilogout');
 
 
 
 //Route::get('companies', 'CompanyController@index')->middleware('auth:api', 'App\Http\Middleware\AdminMiddleware');
 
-Route::group(['middleware' => ['auth:api', 'App\Http\Middleware\AdminMiddleware']], function() {
+Route::group(['middleware' => 'auth:api'], function() {
     //for company table
     Route::get('companies', 'CompanyController@index');
     Route::get('companies/{company}', 'CompanyController@show');
@@ -42,6 +41,8 @@ Route::group(['middleware' => ['auth:api', 'App\Http\Middleware\AdminMiddleware'
     Route::post('categories', 'CategoryController@store');
     Route::put('categories/{category}', 'CategoryController@update');
     Route::delete('categories/{category}', 'CategoryController@delete');
+
+    Route::get('categoryproduct/{category}', 'CategoryController@CategoryProductJoin');
 
 
 //for product table
@@ -83,6 +84,8 @@ Route::group(['middleware' => ['auth:api', 'App\Http\Middleware\AdminMiddleware'
     Route::put('cartitems/{cartitem}', 'CartItemController@update');
     Route::delete('cartitems/{cartitem}', 'CartItemController@delete');
 
+    Route::get('cartproduct', 'CartItemController@cartProductJoin');
+
 
 //for Order table
     Route::get('orders', 'OrderController@index');
@@ -97,6 +100,18 @@ Route::group(['middleware' => ['auth:api', 'App\Http\Middleware\AdminMiddleware'
     Route::post('orderdetails', 'OrderDetailController@store');
     Route::put('orderdetails/{orderdetail}', 'OrderDetailController@update');
     Route::delete('orderdetails/{orderdetail}', 'OrderDetailController@delete');
+
+
+
+ //for follow table
+    Route::post('apifollow', 'FollowController@apistore');
+    Route::get('apishow', 'FollowController@apigetfollow');
+Route::delete('apiunfollow/{follow}', 'FollowController@apiunfollow');
+
+
+Route::get('vendorproduct','CompanyController@vendorproductjoin');
+Route::get('getvendor', 'CompanyController@vendorlist');
+Route::get('getvendor/{id}', 'CompanyController@vendorprod');
 });
 
 

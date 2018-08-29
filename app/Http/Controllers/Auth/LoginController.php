@@ -29,7 +29,7 @@ class LoginController extends Controller
      *
      * @var string
      */
-    protected $redirectTo = '/home';
+    protected $redirectTo = '/';
 
     /**
      * Create a new controller instance.
@@ -41,7 +41,32 @@ class LoginController extends Controller
         $this->middleware('guest')->except('logout');
     }
 
-    public function login(Request $request)
+    /**
+     * Show the application's login form.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function showLoginForm()
+    {
+        session()->put('previousUrl', url()->previous());
+        return view('auth.login');
+    }
+
+    public function redirectTo()
+    {
+        if (Auth::user()->responsibility == "Admin"){
+            return '/admin';
+    }
+    else if (Auth::user()->responsibility == "Vendor"){
+        return '/vendorhomepage';
+    }
+    else if (Auth::user()->responsibility == "Customer"){
+        return '/';
+    }
+    return str_replace(url('/'), '', session()->get('previousUrl', '/'));
+    }
+
+    public function apilogin(Request $request)
     {
         $this->validateLogin($request);
 
@@ -49,9 +74,7 @@ class LoginController extends Controller
             $user = $this->guard()->user();
             $user->generateToken();
 
-            return response()->json([
-                $user,
-            ]);
+            return response()->json($user);
         }
         else {
             return response()->json([
@@ -62,7 +85,7 @@ class LoginController extends Controller
         return $this->sendFailedLoginResponse($request);
     }
 
-    public function logout(Request $request)
+    public function apilogout(Request $request)
     {
         $user = Auth::guard('api')->user();
         //$user = $this->guard('api')->user();
